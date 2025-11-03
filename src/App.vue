@@ -6,15 +6,11 @@
   import LangToggle from '@/components/LangToggle.vue';
 
   const isEnabled = ref(false);
-
-  const onToggle = (value) => {
-    console.log('Тоггл изменился:', value)
-  };
 </script>
 
 <template>
   <div class="calendar">
-    <LangToggle v-model="isEnabled" @toggle="onToggle" />
+    <LangToggle v-model="isEnabled" />
     <div class="calendar__wrapper">
       <CalendarTitle />
       <CalendarContent />
@@ -25,18 +21,23 @@
 
 <style scoped lang="scss">
   .calendar {
-    width: 90vw;
+    max-width: 94vw;
 
     @media(min-width: 670px) {
       width: 500px;
+      max-width: 80%;
     }
 
     .calendar__wrapper {
-      width: 100%;
-      padding: 30px;
+      max-width: 100%;
+      padding: 10px;
       border-radius: 5px;
       background-color: lightpink;
-      box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.1);
+
+      @media(min-width: 670px) {
+        width: 100%;
+        padding: 30px;
+      }
     }
   }
 </style>

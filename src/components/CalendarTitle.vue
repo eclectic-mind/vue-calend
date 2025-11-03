@@ -3,7 +3,7 @@ import { useStore } from 'vuex';
 import { computed } from 'vue';
 
 const store = useStore();
-const monthYear = computed(() => store.getters.monthYearDate);
+const monthYear = computed(() => store.getters.getMonthYearDate);
 
 const changeMonth = (direction) => store.commit('changeMonth', direction);
 </script>
@@ -30,9 +30,17 @@ const changeMonth = (direction) => store.commit('changeMonth', direction);
     justify-content: space-between;
 
     .month {
+      display: flex;
+      justify-content: center;
+      align-content: center;
       color: deeppink;
-      font-size: 3em;
+      font-size: 1.6em;
       font-weight: bold;
+      line-height: 1;
+
+      @media(min-width: 670px) {
+        font-size: 3em;
+      }
     }
 
     .arrow {
@@ -40,11 +48,14 @@ const changeMonth = (direction) => store.commit('changeMonth', direction);
       justify-content: center;
       align-items: center;
       color: deeppink;
-      font-size: 3em;
+      font-size: 1.6em;
+      line-height: 1;
       cursor: pointer;
       transition: 0.4s;
 
       @media(min-width: 670px) {
+        font-size: 3em;
+
         &:hover {
           opacity: 0.7;
         }

@@ -1,6 +1,6 @@
 <script setup>
 import { useStore } from 'vuex';
-import { computed, ref, watch, defineProps, defineEmits } from 'vue';
+import { computed } from 'vue';
 
 const store = useStore();
 const isRussian = computed(() => store.getters.isRussian);

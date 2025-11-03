@@ -1,5 +1,5 @@
 <script setup>
-  import {computed} from "vue";
+import {computed, onMounted, ref} from 'vue';
   import {useStore} from "vuex";
 
   const WEEKDAYS_EN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -7,9 +7,38 @@
 
   const store = useStore();
 
+  const todaysDay = computed(() => store.getters.getTodaysDay);
   const weekDays = computed(() => {
     return store.getters.getLang === 'ru-RU' ? WEEKDAYS_RU : WEEKDAYS_EN;
   });
+  const month = computed(() => store.getters.getMonth);
+  const year = computed(() => store.getters.getYear);
+
+  const countTotal = (year, month) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
+  const isToday = (number) => {
+    return Number(number) === Number(todaysDay.value);
+  };
+
+  const getFirstDayNumber = () => {
+    const firstDayDate = new Date(year.value, month.value, 2, 0, 0);
+
+    return firstDayDate.getDay();
+  };
+
+  const getStyle = (index) => {
+    if (index === 0) {
+      const shift = getFirstDayNumber();
+
+      return {
+        gridColumnStart: shift
+      };
+    }
+  }
+
+  const total = countTotal(year.value, month.value);
 </script>
 
 <template>
@@ -25,12 +54,15 @@
       </div>
     </div>
 
-    <div class="dates">
-      <div class="date"
-           v-for="date in 31"
+    <div class="dates"
+    >
+      <div :class="['date', {'today': isToday(item)}]"
+           v-for="(item, index) in total"
+           :key="index"
+           :style="getStyle(index)"
       >
         <span>
-          {{ date }}
+          {{ item }}
         </span>
       </div>
     </div>
@@ -39,9 +71,13 @@
 
 <style scoped lang="scss">
   .calendar__content {
-    margin: 20px 10px 0 10px;
     display: flex;
     flex-direction: column;
+    margin: 20px 0 0 0;
+
+    @media(min-width: 670px) {
+      margin: 20px 10px 0 10px;
+    }
 
     .weekdays,
     .dates {
@@ -99,12 +135,6 @@
         span {
           background-color: deeppink;
           color: linen;
-        }
-      }
-
-      &.disabled {
-        span {
-          visibility: hidden;
         }
       }
     }

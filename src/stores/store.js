@@ -2,8 +2,8 @@ import { createStore } from 'vuex';
 
 export default createStore({
     state: {
-        today: new Date(),
-        lang: 'ru-RU'
+        today: new Date(2025, 0, 18, 10, 30),
+        lang: 'ru-RU',
     },
     mutations: {
         stepBack(state) {
@@ -29,22 +29,34 @@ export default createStore({
 
         toggleLang({ commit }) {
             commit('toggleLanguage');
-        },
+        }
     },
     getters: {
-        formattedDate: (state) => {
+        getFormattedDate: (state) => {
             return state.today.toLocaleString(state.lang);
         },
 
-        isoDate: (state) => {
+        getIsoDate: (state) => {
             return state.today.toISOString();
         },
 
-        monthYearDate: (state) => {
+        getMonthYearDate: (state) => {
             return new Intl.DateTimeFormat(state.lang, {
                 month: 'short',
                 year: 'numeric'
             }).format(state.today).replace('.', '');
+        },
+
+        getTodaysDay: (state) => {
+            return state.today.getDate();
+        },
+
+        getMonth: (state) => {
+            return state.today.getMonth();
+        },
+
+        getYear: (state) => {
+            return state.today.getFullYear();
         },
 
         getLang: (state) => {
