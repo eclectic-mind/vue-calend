@@ -4,12 +4,12 @@
 
   const store = useStore();
   const today = computed(() => store.getters.getFormattedDate);
-  const lang = computed(() => store.getters.getLang);
+  const isRussian = computed(() => store.getters.isRussian);
 </script>
 
 <template>
   <footer class="calendar__footer">
-    <span v-if="lang === 'ru-RU'">Текущая дата: </span>
+    <span v-if="isRussian">Текущая дата: </span>
     <span v-else>Current date: </span>
     &nbsp;{{ today }}
   </footer>

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from 'vue';
+import {computed} from 'vue';
   import {useStore} from "vuex";
 
   const WEEKDAYS_EN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -8,11 +8,11 @@ import {computed, onMounted, ref} from 'vue';
   const store = useStore();
 
   const date = computed(() => store.getters.getDate);
-  const weekDays = computed(() => {
-    return store.getters.getLang === 'ru-RU' ? WEEKDAYS_RU : WEEKDAYS_EN;
-  });
   const month = computed(() => store.getters.getMonth);
   const year = computed(() => store.getters.getFullYear);
+  const weekDays = computed(() => {
+    return store.getters.isRussian ? WEEKDAYS_RU : WEEKDAYS_EN;
+  });
 
   const countTotal = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -47,8 +47,6 @@ import {computed, onMounted, ref} from 'vue';
 
 <template>
   <main class="calendar__content">
-    <div>year: {{ year }}, month: {{ month }}, date: {{ date }}</div><br clear="all">
-
     <div class="weekdays">
       <div
           v-for="(day, index) in weekDays"

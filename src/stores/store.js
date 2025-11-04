@@ -16,21 +16,15 @@ export default createStore({
         },
 
         switchDate(state, date) {
-            console.log('MUTATION', date);
             state.today.date = date;
-            console.log('day changed to', state.today);
         },
 
         switchMonth(state, month) {
-            console.log('MUTATION', month);
             state.today.month = month;
-            console.log('month changed to', state.today);
         },
 
         switchYear(state, year) {
-            console.log('MUTATION', year);
             state.today.year = year;
-            console.log('year changed to', state.today);
         }
     },
     actions: {
@@ -39,10 +33,7 @@ export default createStore({
         },
 
         switchCurrentMonth({ commit }, direction) {
-            console.log('SWITCH MONTH, current:', this.state.today);
-
             if (direction === 'back') {
-                console.log('back');
                 if (this.state.today.month === 0) {
                     commit('switchYear', this.state.today.year - 1);
                     commit('switchMonth', 11);
@@ -50,7 +41,6 @@ export default createStore({
                     commit('switchMonth', this.state.today.month - 1);
                 }
             } else {
-                console.log('forward');
                 if (this.state.today.month === 11) {
                     commit('switchYear', this.state.today.year + 1);
                     commit('switchMonth', 0);
@@ -67,7 +57,6 @@ export default createStore({
     getters: {
         getFormattedDate: (state) => {
             const dt = new Date(state.today.year, state.today.month, state.today.date);
-            console.log('dt', dt);
 
             return new Intl.DateTimeFormat(state.lang, {
                 day: '2-digit',
@@ -76,12 +65,16 @@ export default createStore({
             }).format(dt);
         },
 
-        /* getMonthYearDate: (state) => {
+        getShortFormattedDate: (state) => {
+            const dt = new Date(state.today.year, state.today.month, state.today.date);
+
             return new Intl.DateTimeFormat(state.lang, {
                 month: 'short',
                 year: 'numeric'
-            }).format(state.today).replace('.', '');
-        }, */
+                }).format(dt)
+                .replace(/\.$/, '')
+                .replace(/^\w/, char => char.toUpperCase())
+        },
 
         getDate: (state) => {
             return state.today.date;
@@ -93,10 +86,6 @@ export default createStore({
 
         getFullYear: (state) => {
             return state.today.year;
-        },
-
-        getLang: (state) => {
-            return state.lang;
         },
 
         isRussian: (state) => {

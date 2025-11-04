@@ -3,8 +3,7 @@
   import { computed } from 'vue';
 
   const store = useStore();
-  const month = computed(() => store.getters.getMonth);
-  const year = computed(() => store.getters.getFullYear);
+  const monthYear = computed(() => store.getters.getShortFormattedDate);
 
   const changeMonth = (direction) => {
     store.dispatch('switchCurrentMonth', direction)
@@ -17,7 +16,7 @@
       &#9668;
     </div>
     <div class="month">
-      {{ month }} {{ year }}
+      {{ monthYear }}
     </div>
     <div class="right-arrow arrow" @click="changeMonth('forward')">
       &#9658;
@@ -42,7 +41,7 @@
       line-height: 1;
 
       @media(min-width: 670px) {
-        font-size: 3em;
+        font-size: 2.8em;
       }
     }
 
