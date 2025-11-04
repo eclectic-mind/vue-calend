@@ -23,7 +23,7 @@ import {computed, onMounted, ref} from 'vue';
   };
 
   const getFirstDayNumber = () => {
-    const firstDayDate = new Date(year.value, month.value, 2, 0, 0);
+    const firstDayDate = new Date(`${year.value}-${month.value}-1`);
 
     return firstDayDate.getDay();
   };
@@ -36,9 +36,13 @@ import {computed, onMounted, ref} from 'vue';
         gridColumnStart: shift
       };
     }
-  }
+  };
 
   const total = countTotal(year.value, month.value);
+
+  const switchToday = (index) => {
+    store.dispatch('switchCurrentDay', index)
+  };
 </script>
 
 <template>
@@ -60,6 +64,7 @@ import {computed, onMounted, ref} from 'vue';
            v-for="(item, index) in total"
            :key="index"
            :style="getStyle(index)"
+           @click="switchToday(index)"
       >
         <span>
           {{ item }}

@@ -5,7 +5,9 @@ import { computed } from 'vue';
 const store = useStore();
 const monthYear = computed(() => store.getters.getMonthYearDate);
 
-const changeMonth = (direction) => store.commit('changeMonth', direction);
+const changeMonth = (direction) => {
+  store.dispatch('switchCurrentMonth', direction)
+};
 </script>
 
 <template>

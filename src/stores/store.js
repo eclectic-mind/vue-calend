@@ -2,33 +2,45 @@ import { createStore } from 'vuex';
 
 export default createStore({
     state: {
-        today: new Date(2025, 0, 18, 10, 30),
+        today: new Date(),
         lang: 'ru-RU',
     },
     mutations: {
-        stepBack(state) {
-            state.today.setMonth(state.today.getMonth() - 1);
-        },
-
-        stepForward(state) {
-            state.today.setMonth(state.today.getMonth() + 1);
-        },
-
         toggleLanguage(state) {
             state.lang = state.lang === 'ru-RU' ? 'en-EN' : 'ru-RU'
-        }
+        },
+
+        switchDate(state, date) {
+            console.log(date, new Date(date));
+
+            state.today = new Date(date);
+
+            console.log('day changed', state.today);
+        },
     },
     actions: {
-        changeMonth({ commit }, direction) {
+        switchCurrentMonth({ commit }, direction) {
+            let params = '';
+            const newMonth = Number(this.state.today.getMonth());
+
             if (direction === 'back') {
-                commit('stepBack');
+                params = `${this.state.today.getFullYear()}, ${newMonth - 1}, ${this.state.today.getDate()}`;
+                console.log('back', params);
             } else {
-                commit('stepForward');
+                params = `${this.state.today.getFullYear()}, ${newMonth + 1}, ${this.state.today.getDate()}`;
+                console.log('forward', params);
             }
+            commit('switchDate', params);
         },
 
         toggleLang({ commit }) {
             commit('toggleLanguage');
+        },
+
+        switchCurrentDay({ commit }, index) {
+            const params = `${this.state.today.getFullYear()}, ${this.state.today.getMonth()}, ${index}`;
+            console.log('m/y switchDate:', params);
+            commit('switchDate', params);
         }
     },
     getters: {
@@ -48,7 +60,7 @@ export default createStore({
         },
 
         getTodaysDay: (state) => {
-            return state.today.getDate();
+            return state.today?.getDate();
         },
 
         getMonth: (state) => {
