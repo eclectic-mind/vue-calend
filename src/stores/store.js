@@ -1,74 +1,98 @@
 import { createStore } from 'vuex';
 
 export default createStore({
-    state: {
-        today: new Date(),
-        lang: 'ru-RU',
-    },
+    state: () => ({
+        today: {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth(),
+            date: new Date().getDate()
+        },
+        lang: 'ru-RU'
+    }),
+
     mutations: {
         toggleLanguage(state) {
             state.lang = state.lang === 'ru-RU' ? 'en-EN' : 'ru-RU'
         },
 
         switchDate(state, date) {
-            console.log(date, new Date(date));
-
-            state.today = new Date(date);
-
-            console.log('day changed', state.today);
+            console.log('MUTATION', date);
+            state.today.date = date;
+            console.log('day changed to', state.today);
         },
+
+        switchMonth(state, month) {
+            console.log('MUTATION', month);
+            state.today.month = month;
+            console.log('month changed to', state.today);
+        },
+
+        switchYear(state, year) {
+            console.log('MUTATION', year);
+            state.today.year = year;
+            console.log('year changed to', state.today);
+        }
     },
     actions: {
-        switchCurrentMonth({ commit }, direction) {
-            let params = '';
-            const newMonth = Number(this.state.today.getMonth());
-
-            if (direction === 'back') {
-                params = `${this.state.today.getFullYear()}, ${newMonth - 1}, ${this.state.today.getDate()}`;
-                console.log('back', params);
-            } else {
-                params = `${this.state.today.getFullYear()}, ${newMonth + 1}, ${this.state.today.getDate()}`;
-                console.log('forward', params);
-            }
-            commit('switchDate', params);
-        },
-
         toggleLang({ commit }) {
             commit('toggleLanguage');
         },
 
+        switchCurrentMonth({ commit }, direction) {
+            console.log('SWITCH MONTH, current:', this.state.today);
+
+            if (direction === 'back') {
+                console.log('back');
+                if (this.state.today.month === 0) {
+                    commit('switchYear', this.state.today.year - 1);
+                    commit('switchMonth', 11);
+                } else {
+                    commit('switchMonth', this.state.today.month - 1);
+                }
+            } else {
+                console.log('forward');
+                if (this.state.today.month === 11) {
+                    commit('switchYear', this.state.today.year + 1);
+                    commit('switchMonth', 0);
+                } else {
+                    commit('switchMonth', this.state.today.month + 1);
+                }
+            }
+        },
+
         switchCurrentDay({ commit }, index) {
-            const params = `${this.state.today.getFullYear()}, ${this.state.today.getMonth()}, ${index}`;
-            console.log('m/y switchDate:', params);
-            commit('switchDate', params);
+            commit('switchDate', index);
         }
     },
     getters: {
         getFormattedDate: (state) => {
-            return state.today.toLocaleString(state.lang);
+            const dt = new Date(state.today.year, state.today.month, state.today.date);
+            console.log('dt', dt);
+
+            return new Intl.DateTimeFormat(state.lang, {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            }).format(dt);
         },
 
-        getIsoDate: (state) => {
-            return state.today.toISOString();
-        },
-
-        getMonthYearDate: (state) => {
+        /* getMonthYearDate: (state) => {
             return new Intl.DateTimeFormat(state.lang, {
                 month: 'short',
                 year: 'numeric'
             }).format(state.today).replace('.', '');
-        },
+        }, */
 
-        getTodaysDay: (state) => {
-            return state.today?.getDate();
+        getDate: (state) => {
+            return state.today.date;
         },
 
         getMonth: (state) => {
-            return state.today.getMonth();
+            return state.today.month;
         },
 
-        getYear: (state) => {
-            return state.today.getFullYear();
+        getFullYear: (state) => {
+            return state.today.year;
         },
 
         getLang: (state) => {

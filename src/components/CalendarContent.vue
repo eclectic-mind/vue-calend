@@ -7,19 +7,19 @@ import {computed, onMounted, ref} from 'vue';
 
   const store = useStore();
 
-  const todaysDay = computed(() => store.getters.getTodaysDay);
+  const date = computed(() => store.getters.getDate);
   const weekDays = computed(() => {
     return store.getters.getLang === 'ru-RU' ? WEEKDAYS_RU : WEEKDAYS_EN;
   });
   const month = computed(() => store.getters.getMonth);
-  const year = computed(() => store.getters.getYear);
+  const year = computed(() => store.getters.getFullYear);
 
   const countTotal = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
   };
 
   const isToday = (number) => {
-    return Number(number) === Number(todaysDay.value);
+    return Number(number) === Number(date.value);
   };
 
   const getFirstDayNumber = () => {
@@ -41,12 +41,14 @@ import {computed, onMounted, ref} from 'vue';
   const total = countTotal(year.value, month.value);
 
   const switchToday = (index) => {
-    store.dispatch('switchCurrentDay', index)
+    store.dispatch('switchCurrentDay', index);
   };
 </script>
 
 <template>
   <main class="calendar__content">
+    <div>year: {{ year }}, month: {{ month }}, date: {{ date }}</div><br clear="all">
+
     <div class="weekdays">
       <div
           v-for="(day, index) in weekDays"
@@ -58,16 +60,16 @@ import {computed, onMounted, ref} from 'vue';
       </div>
     </div>
 
-    <div class="dates"
-    >
-      <div :class="['date', {'today': isToday(item)}]"
-           v-for="(item, index) in total"
+    <div class="dates">
+      <div v-for="index in total"
            :key="index"
            :style="getStyle(index)"
            @click="switchToday(index)"
+           :data-value="index"
+           :class="['date', {'today': isToday(index)}]"
       >
         <span>
-          {{ item }}
+          {{ index }}
         </span>
       </div>
     </div>

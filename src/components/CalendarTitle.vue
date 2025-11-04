@@ -1,13 +1,14 @@
 <script setup>
-import { useStore } from 'vuex';
-import { computed } from 'vue';
+  import { useStore } from 'vuex';
+  import { computed } from 'vue';
 
-const store = useStore();
-const monthYear = computed(() => store.getters.getMonthYearDate);
+  const store = useStore();
+  const month = computed(() => store.getters.getMonth);
+  const year = computed(() => store.getters.getFullYear);
 
-const changeMonth = (direction) => {
-  store.dispatch('switchCurrentMonth', direction)
-};
+  const changeMonth = (direction) => {
+    store.dispatch('switchCurrentMonth', direction)
+  };
 </script>
 
 <template>
@@ -16,7 +17,7 @@ const changeMonth = (direction) => {
       &#9668;
     </div>
     <div class="month">
-      {{ monthYear }}
+      {{ month }} {{ year }}
     </div>
     <div class="right-arrow arrow" @click="changeMonth('forward')">
       &#9658;
