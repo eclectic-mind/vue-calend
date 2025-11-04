@@ -39,6 +39,7 @@
       font-size: 1.6em;
       font-weight: bold;
       line-height: 1;
+      user-select: none;
 
       @media(min-width: 670px) {
         font-size: 2.8em;
@@ -54,6 +55,7 @@
       line-height: 1;
       cursor: pointer;
       transition: 0.4s;
+      user-select: none;
 
       @media(min-width: 670px) {
         font-size: 3em;

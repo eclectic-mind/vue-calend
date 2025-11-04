@@ -27,7 +27,14 @@ export default createStore({
             state.today.year = year;
         }
     },
+
     actions: {
+        setDefaultDate({ commit }, params) {
+            commit('switchYear', params.year);
+            commit('switchMonth', params.month);
+            commit('switchDate', params.date);
+        },
+
         toggleLang({ commit }) {
             commit('toggleLanguage');
         },
@@ -54,6 +61,7 @@ export default createStore({
             commit('switchDate', index);
         }
     },
+
     getters: {
         getFormattedDate: (state) => {
             const dt = new Date(state.today.year, state.today.month, state.today.date);

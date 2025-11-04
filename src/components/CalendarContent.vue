@@ -23,13 +23,13 @@ import {computed} from 'vue';
   };
 
   const getFirstDayNumber = () => {
-    const firstDayDate = new Date(`${year.value}-${month.value}-1`);
+    const firstDate = new Date(year.value, month.value, 1);
 
-    return firstDayDate.getDay();
+    return firstDate.getDay();
   };
 
   const getStyle = (index) => {
-    if (index === 0) {
+    if (index === 1) {
       const shift = getFirstDayNumber();
 
       return {
@@ -78,10 +78,10 @@ import {computed} from 'vue';
   .calendar__content {
     display: flex;
     flex-direction: column;
-    margin: 20px 0 0 0;
+    margin-top: 10px;
 
     @media(min-width: 670px) {
-      margin: 20px 10px 0 10px;
+      margin-top: 30px;
     }
 
     .weekdays,
@@ -95,7 +95,11 @@ import {computed} from 'vue';
     }
 
     .dates {
-      margin-top: 20px;
+      margin-top: 10px;
+
+      @media(min-width: 670px) {
+        margin-top: 30px;
+      }
     }
 
     .day {
@@ -108,12 +112,13 @@ import {computed} from 'vue';
     }
 
     span {
-      width: 100%;
-      height: 100%;
-      text-align: center;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
+      min-width: 40px;
+      height: 100%;
+      text-align: center;
     }
 
     .date {
@@ -134,6 +139,10 @@ import {computed} from 'vue';
       span {
         min-height: 50px;
         background-color: #fad7d7;
+
+        @media(min-width: 670px) {
+          min-height: 70px;
+        }
       }
 
       &.today {

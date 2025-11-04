@@ -37,6 +37,7 @@ const toggleLanguage = () => {
     color: black;
     font-size: 1.6em;
     font-weight: bold;
+    user-select: none;
   }
 
   .switch {
@@ -55,25 +56,25 @@ const toggleLanguage = () => {
 
   .slider {
     position: absolute;
-    cursor: pointer;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-color: #fad7d7;
-    transition: 0.4s;
     border-radius: 34px;
+    transition: 0.4s;
+    cursor: pointer;
 
     &:before {
       position: absolute;
+      left: 4px;
+      bottom: 4px;
       content: "";
       height: 26px;
       width: 26px;
-      left: 4px;
-      bottom: 4px;
+      border-radius: 50%;
       background-color: lightpink;
       transition: 0.4s;
-      border-radius: 50%;
     }
   }
 
